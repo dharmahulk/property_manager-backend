@@ -1,7 +1,6 @@
 from typing import Union
 
 from fastapi import FastAPI, Request
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -53,8 +52,3 @@ from starlette.middleware.sessions import SessionMiddleware
 
 # Add session middleware for authentication
 app.add_middleware(SessionMiddleware, secret_key="your-secret-key-here-change-in-production")
-
-
-
-# Mount static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
