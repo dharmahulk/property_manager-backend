@@ -1,0 +1,33 @@
+# Development requirements (includes main requirements + testing/dev tools)
+-r requirements.txt
+
+# Testing frameworks
+pytest==7.4.4
+pytest-asyncio==0.21.1
+pytest-cov==4.1.0
+pytest-mock==3.12.0
+pytest-html==4.1.1
+pytest-xdist==3.5.0
+
+# Test data generation
+faker==22.2.0
+
+# HTTP testing
+httpx==0.26.0
+
+# Code quality tools
+flake8==7.0.0
+black==24.1.1
+isort==5.13.2
+
+# Security scanning
+bandit==1.7.6
+safety==2.3.5
+
+# Development utilities
+ipython==8.20.0
+ipdb==0.13.13
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.5.6
