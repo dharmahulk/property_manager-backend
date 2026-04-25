@@ -1,11 +1,12 @@
+"""
+Common utility functions for the application.
+"""
 from datetime import datetime, timedelta
 from typing import Optional
 import hashlib
 
-from sqlalchemy.orm import Session
 from jose import jwt, JWTError
 
-from auth.models import AdminUser
 from config import api_settings
 
 
@@ -51,26 +52,3 @@ def is_token_blocklisted(token: str) -> bool:
 def add_to_blocklist(token: str) -> None:
     """Add a token to the blocklist"""
     api_settings.TOKEN_BLOCKLIST.add(token)
-
-
-class AdminUserService:
-    model = AdminUser
-
-    @classmethod
-    def get_user_by_email(cls,db: Session, email: str):
-        return db.query(cls.model).filter(cls.model.email == email).first()
-    
-    @classmethod
-    def get_by_id(cls, db: Session, model_id: int):
-        return db.query(cls.model).filter(cls.model.id == model_id).first()
-    
-    @classmethod
-    def get_all(cls, db: Session, skip: int = 0, limit: int = 100):
-        return db.query(cls.model).offset(skip).limit(limit).all()
-    
-    @classmethod
-    def create(cls, db: Session, model_instance):
-        db.add(model_instance)
-        db.commit()
-        db.refresh(model_instance)
-        return model_instance

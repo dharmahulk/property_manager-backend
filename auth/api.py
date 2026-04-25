@@ -12,8 +12,9 @@ from sqlalchemy.orm import Session
 
 from auth.schemas import AdminUserResponse, AdminUserCreate
 from config import pg_sql_settings
+from db import get_db
 
-from auth.services import AdminUserService
+from auth.services import AdminUserService, hash_password, verify_password, create_access_token
 
 # Try to create database tables, but don't fail if database is not available
 try:
@@ -23,10 +24,11 @@ except Exception as e:
     print(f"Warning: Database not available - {e}")
     DB_AVAILABLE = False
 
+
 # Mock database session for when DB is not available
 def get_db_session():
     if DB_AVAILABLE:
-        yield from pg_sql_settings.get_db_session()
+        yield from get_db()
     else:
         yield None
 

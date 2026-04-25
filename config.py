@@ -1,4 +1,5 @@
 from functools import cached_property
+from datetime import timedelta
 
 import os
 from typing import Optional
@@ -9,10 +10,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+
 class ApiSettings(BaseSettings):
-    PROJECT_NAME: str = "HI"
-    API_STR: str = ""
-    API_PREFIX: str = "/money_tracker"
+    PROJECT_NAME: str = "Property Manager"
+    API_STR: str = "/api"
+    API_PREFIX: str = "/api"
 
     HOST_DOCS: bool = True
     DEBUG: bool = False
@@ -21,6 +23,14 @@ class ApiSettings(BaseSettings):
     SERVICE_PORT: int = 8000
 
     CORS_ORIGINS_REGEX: Optional[str] = None
+
+    # JWT Settings
+    JWT_SECRET: str = os.getenv("JWT_SECRET", "your-secret-key-change-in-production")
+    JWT_ALGORITHM: str = "HS256"
+    JWT_EXPIRE_MINUTES: int = int(os.getenv("JWT_EXPIRE_MINUTES", "10080"))  # 7 days in minutes
+    
+    # Token blocklist (in-memory for now, use Redis in production)
+    TOKEN_BLOCKLIST: set = set()
 
     LOGGING_CONFIG: dict = {
         "version": 1,
@@ -99,3 +109,6 @@ class PostGresSQLSettings(BaseSettings):
 
 api_settings = ApiSettings()
 pg_sql_settings = PostGresSQLSettings()
+
+# For backward compatibility
+get_db = pg_sql_settings.get_db_session

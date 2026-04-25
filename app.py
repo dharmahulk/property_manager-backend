@@ -6,6 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from frontend.api import router as base_router
 from auth.api import router as login_router
+from properties.api import router as properties_router
+from listings.api import router as listings_router
+from users.api import router as users_router
 from config import api_settings
 
 app = FastAPI(
@@ -44,7 +47,10 @@ async def serve_debug_page():
     return FileResponse("debug_signup.html")
 
 app.include_router(base_router)
-app.include_router(login_router)
+app.include_router(login_router, prefix=api_settings.API_STR)
+app.include_router(properties_router, prefix=api_settings.API_STR)
+app.include_router(listings_router, prefix=api_settings.API_STR)
+app.include_router(users_router)
 
 
 from starlette.middleware.sessions import SessionMiddleware
