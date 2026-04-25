@@ -47,4 +47,14 @@ async def serve_debug_page():
 app.include_router(base_router)
 app.include_router(login_router)
 
-app.mount("/static", StaticFiles(directory="frontend/BootStraps/startbootstrap/dist"), name="static")
+
+from starlette.middleware.sessions import SessionMiddleware
+
+
+# Add session middleware for authentication
+app.add_middleware(SessionMiddleware, secret_key="your-secret-key-here-change-in-production")
+
+
+
+# Mount static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
