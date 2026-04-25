@@ -1,5 +1,6 @@
 from functools import cached_property
 
+import os
 from typing import Optional
 from pydantic_settings import BaseSettings
 from urllib.parse import quote_plus
@@ -46,17 +47,14 @@ class ApiSettings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
-
+        
 class PostGresSQLSettings(BaseSettings):
-    DB_USER: str = "postgres.dbtsryjnsufsmobqoixs"
-    DB_PASSWORD: str = "Dharmadon36@hulk"
-    DB_HOST: str = "aws-0-ap-south-1.pooler.supabase.com"
-    DB_PORT: str = "5432"
-    DB_NAME: str = "postgres"
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # Read from environment variables with fallbacks
+    DB_USER: str = os.getenv("DB_USER", "postgres")
+    DB_PASSWORD: str = os.getenv("DB_PASSWORD", "password")
+    DB_HOST: str = os.getenv("DB_HOST", "localhost")
+    DB_PORT: str = os.getenv("DB_PORT", "5432")
+    DB_NAME: str = os.getenv("DB_NAME", "postgres")
 
     @cached_property
     def pg_sql_database_url(self):
@@ -80,6 +78,24 @@ class PostGresSQLSettings(BaseSettings):
             yield db
         finally:
             db.close()
+    
+    def test_connection(self):
+        """Test database connection"""
+        try:
+            print(f"Testing connection to: {self.DB_HOST}:{self.DB_PORT}")
+            print(f"Database: {self.DB_NAME}")
+            print(f"User: {self.DB_USER}")
+            
+            engine = self.db_engine
+            with engine.connect() as conn:
+                from sqlalchemy import text
+                conn.execute(text("SELECT 1"))
+                print("✅ Database connection successful!")
+                return True
+        except Exception as e:
+            print(f"❌ Database connection failed: {str(e)}")
+            print(f"Connection URL (without password): postgresql://{self.DB_USER}:***@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}")
+            return False
 
 api_settings = ApiSettings()
 pg_sql_settings = PostGresSQLSettings()
