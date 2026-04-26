@@ -1,7 +1,6 @@
 from typing import List, Optional
 from datetime import timedelta
 from fastapi import APIRouter, Depends, HTTPException, status, Header
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 
 from config import api_settings
@@ -11,7 +10,6 @@ from users import schemas, services, models
 
 
 # OAuth2 scheme
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/login")
 
 # Router
 router = APIRouter(prefix="/api/users", tags=["users"])
@@ -42,7 +40,7 @@ def get_current_user(
     token = parts[1]
     
     # Check if token is blocklisted
-    if services.is_token_blocklisted(token):
+    if is_token_blocklisted(token):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Token has been revoked",
@@ -50,7 +48,7 @@ def get_current_user(
         )
     
     # Decode token
-    payload = services.decode_token(token)
+    payload = decode_token(token)
     if not payload:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -129,9 +127,9 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=schemas.TokenResponse)
-def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+def login(form_data: schemas.LoginRequest = Depends(), db: Session = Depends(get_db)):
     """Login with email and password"""
-    user = services.UserService.authenticate(db, form_data.username, form_data.password)
+    user = services.UserService.authenticate(db, form_data.email, form_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
