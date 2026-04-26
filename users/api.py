@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from config import api_settings
 from db import get_db
-from utils import is_token_blocklisted, decode_token, add_to_blocklist
+from utils import is_token_blocklisted, decode_token, add_to_blocklist, create_access_token
 from users import schemas, services, models
 
 
@@ -105,7 +105,7 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     )
     
     # Create token
-    access_token = services.create_access_token(
+    access_token = create_access_token(
         data={"sub": str(user.id)},
         expires_delta=timedelta(minutes=api_settings.JWT_EXPIRE_MINUTES)
     )
@@ -140,7 +140,7 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         )
     
     # Create token
-    access_token = services.create_access_token(
+    access_token = create_access_token(
         data={"sub": str(user.id)},
         expires_delta=timedelta(minutes=api_settings.JWT_EXPIRE_MINUTES)
     )
