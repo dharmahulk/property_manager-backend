@@ -3,6 +3,8 @@ from typing import Union
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import engine
+from config import pg_sql_settings
 
 from frontend.api import router as base_router
 from auth.api import router as login_router
@@ -28,6 +30,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.on_event("startup")
+def on_startup():
+    pg_sql_settings.db_base.metadata.create_all(bind=engine)
+    print("✅ Tables created successfully")
 
 # Global exception handler
 @app.exception_handler(Exception)
