@@ -11,10 +11,10 @@ from users import schemas, services, models
 
 
 # OAuth2 scheme
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/login")
 
 # Router
-router = APIRouter(prefix="/api/v1/users", tags=["users"])
+router = APIRouter(prefix="/api/users", tags=["users"])
 
 
 # Dependency to get current user
