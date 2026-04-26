@@ -6,7 +6,8 @@ from fastapi import APIRouter, Depends, HTTPException, Header, Query
 from sqlalchemy.orm import Session
 
 from auth import models, schemas
-from auth.services import PropertyService, UserService, decode_token, is_token_blocklisted
+from users.services import PropertyService, UserService
+from utils import decode_token, is_token_blocklisted
 from config import api_settings, pg_sql_settings
 from db import get_db
 from users.models import Property, PropertyType, PropertyStatus, ManagementStatus, SizeUnit
