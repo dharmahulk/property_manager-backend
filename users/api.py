@@ -127,9 +127,9 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @router.post("/login", response_model=schemas.TokenResponse)
-def login(form_data: schemas.LoginRequest = Depends(), db: Session = Depends(get_db)):
+def login(payload: schemas.LoginRequest, db: Session = Depends(get_db)):
     """Login with email and password"""
-    user = services.UserService.authenticate(db, form_data.email, form_data.password)
+    user = services.UserService.authenticate(db, payload.email, payload.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
