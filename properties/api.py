@@ -9,6 +9,7 @@ from auth import models, schemas
 from auth.services import PropertyService, UserService, decode_token, is_token_blocklisted
 from config import api_settings, pg_sql_settings
 from db import get_db
+from users.models import Property, PropertyType, PropertyStatus, ManagementStatus, SizeUnit
 
 
 # Try to create database tables, but don't fail if database is not available
