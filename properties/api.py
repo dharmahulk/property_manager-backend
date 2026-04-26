@@ -50,6 +50,7 @@ def get_current_user(
     payload = decode_token(token)
     if not payload:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
+    print(f"DEBUG: Token payload: {payload}")
     
     user_id = payload.get("userId")
     if not user_id:
