@@ -3,7 +3,6 @@ from typing import Union
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import engine
 from config import pg_sql_settings
 
 from frontend.api import router as base_router
@@ -32,7 +31,7 @@ app.add_middleware(
 )
 @app.on_event("startup")
 def on_startup():
-    pg_sql_settings.db_base.metadata.create_all(bind=engine)
+    pg_sql_settings.db_base.metadata.create_all(bind=pg_sql_settings.db_engine)
     print("✅ Tables created successfully")
 
 # Global exception handler
