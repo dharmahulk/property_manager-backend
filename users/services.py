@@ -1,22 +1,10 @@
 from datetime import datetime
-from typing import Optional
 import json
-
 from sqlalchemy.orm import Session
-
 from users import models
-from utils import (
-    hash_password,
-    verify_password,
-    create_access_token,
-    decode_token,
-    is_token_blocklisted,
-    add_to_blocklist
-)
-from config import api_settings
+from utils import hash_password, verify_password
 
 
-# User Service
 class UserService:
     model = models.User
 
@@ -80,7 +68,6 @@ class UserService:
         return user
 
 
-# Property Service
 class PropertyService:
     model = models.Property
 
@@ -174,7 +161,6 @@ class PropertyService:
         return True
 
 
-# Listing Service
 class ListingService:
     model = models.RentalListing
 

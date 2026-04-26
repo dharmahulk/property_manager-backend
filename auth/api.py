@@ -13,8 +13,7 @@ from sqlalchemy.orm import Session
 from auth.schemas import AdminUserResponse, AdminUserCreate
 from config import pg_sql_settings
 from db import get_db
-
-from auth.services import AdminUserService, hash_password, verify_password, create_access_token
+from auth.services import AdminUserService
 
 # Try to create database tables, but don't fail if database is not available
 try:
