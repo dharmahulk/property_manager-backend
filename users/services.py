@@ -1,5 +1,6 @@
 from datetime import datetime
 import json
+from typing import Optional
 from sqlalchemy.orm import Session
 from users import models
 from utils import hash_password, verify_password
