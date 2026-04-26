@@ -57,6 +57,7 @@ class ApiSettings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "ignore"  # Ignore extra fields in .env
         
 class PostGresSQLSettings(BaseSettings):
     # Read from environment variables with fallbacks

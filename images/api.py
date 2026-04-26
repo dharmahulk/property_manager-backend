@@ -10,7 +10,7 @@ router = APIRouter(prefix="/images", tags=["images"])
 # -------------------------
 # Upload Image
 # -------------------------
-@router.post("/upload/")
+@router.post("/upload")
 async def upload_image(file: UploadFile = File(...), db: Session = Depends(get_db)):
     if not file.content_type.startswith("image/"):
         raise HTTPException(status_code=400, detail="Only image files allowed")
