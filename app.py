@@ -10,7 +10,7 @@ from properties.api import router as properties_router
 from listings.api import router as listings_router
 from users.api import router as users_router
 from config import api_settings
-
+from images.api import router as images_router
 app = FastAPI(
     title=api_settings.PROJECT_NAME,
     description="Modern FastAPI Application with Authentication",
@@ -50,7 +50,8 @@ app.include_router(base_router)
 app.include_router(login_router, prefix=api_settings.API_STR)
 app.include_router(properties_router, prefix=api_settings.API_STR)
 app.include_router(listings_router, prefix=api_settings.API_STR)
-app.include_router(users_router)
+app.include_router(users_router, prefix=api_settings.API_STR)
+app.include_router(images_router, prefix=api_settings.API_STR)
 
 
 from starlette.middleware.sessions import SessionMiddleware

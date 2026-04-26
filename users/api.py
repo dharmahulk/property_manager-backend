@@ -12,7 +12,7 @@ from users import schemas, services, models
 # OAuth2 scheme
 
 # Router
-router = APIRouter(prefix="/api/users", tags=["users"])
+router = APIRouter(prefix="/users", tags=["users"])
 
 
 # Dependency to get current user
