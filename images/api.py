@@ -33,7 +33,7 @@ async def upload_image(file: UploadFile = File(...), db: Session = Depends(get_d
 # -------------------------
 # Get image metadata
 # -------------------------
-@router.get("/image/{image_id}")
+@router.get("/{image_id}")
 def get_image(image_id: int, db: Session = Depends(get_db)):
     img = db.query(Image).filter(Image.id == image_id).first()
 
@@ -50,7 +50,7 @@ def get_image(image_id: int, db: Session = Depends(get_db)):
 # -------------------------
 # View image (raw bytes)
 # -------------------------
-@router.get("/image/{image_id}/view")
+@router.get("/{image_id}/view")
 def view_image(image_id: int, db: Session = Depends(get_db)):
     img = db.query(Image).filter(Image.id == image_id).first()
 
