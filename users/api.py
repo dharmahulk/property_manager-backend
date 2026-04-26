@@ -104,7 +104,7 @@ def signup(user_data: schemas.UserCreate, db: Session = Depends(get_db)):
     
     # Create token
     access_token = create_access_token(
-        data={"sub": str(user.id)},
+        data={"sub": str(user.id), "email": user.email, "userId": user.id},
         expires_delta=timedelta(minutes=api_settings.JWT_EXPIRE_MINUTES)
     )
     
@@ -139,7 +139,7 @@ def login(payload: schemas.LoginRequest, db: Session = Depends(get_db)):
     
     # Create token
     access_token = create_access_token(
-        data={"sub": str(user.id)},
+        data={"sub": str(user.id), "email": user.email, "userId": user.id},
         expires_delta=timedelta(minutes=api_settings.JWT_EXPIRE_MINUTES)
     )
     
